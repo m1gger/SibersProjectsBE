@@ -1,4 +1,5 @@
 ﻿using Application.Features.ProjectContext.Commands;
+using Application.Features.ProjectContext.Query;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -22,12 +23,23 @@ namespace WebAPI.Controllers
             var res = await Mediator.Send(command);
             return Ok(res);
         }
-
+        [HttpPost]
+        [Authorize]
         public async Task<IActionResult> CreateNewProjectCommand([FromForm] CreateNewProjectCommand command) 
         {
 
             var res = await Mediator.Send(command);
             return Ok(res);
         }
+
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> GetAllProjects(GetAllProjectsQuery query)
+        {
+            var res = await Mediator.Send(query);
+            return Ok(res);
+        }
+
+
     }
 }

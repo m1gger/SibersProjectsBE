@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Application.Features.ProjectContext.Dto
 {
-    class ProjectDto
+    public class ProjectDto
     {
         public int Id { get; set; }
         public string Name { get; set; } = string.Empty;

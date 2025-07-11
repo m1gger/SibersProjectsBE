@@ -16,9 +16,7 @@
 	</ItemGroup>
 	<ItemGroup>
 	  <Folder Include="Features\AccountContext\Query\" />
-	  <Folder Include="Features\CompanyContext\Commands\" />
-	  <Folder Include="Features\CompanyContext\Query\" />
-	  <Folder Include="Features\CompanyContext\Dto\" />
+	  <Folder Include="Features\EmployeContext\Commands\" />
 	  <Folder Include="Features\ProjectContext\Query\" />
 	  <Folder Include="Features\TaskContext\Commans\" />
 	  <Folder Include="Features\TaskContext\Query\" />

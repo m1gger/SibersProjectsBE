@@ -18,6 +18,8 @@ namespace Application.Interfaces
         public DbSet<ProjectTask> ProjectTasks { get; set; }
         public DbSet<ProjectCompany> ProjectCompanies { get; set; }
         public DbSet<TaskUser> TaskUsers { get; set; }
+        DbSet<TEntity> Set<TEntity>() where TEntity : class;
+
 
         Task<int> SaveChangesAsync(CancellationToken cancellationToken=default);
     }

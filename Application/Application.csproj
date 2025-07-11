@@ -15,7 +15,9 @@
 		<PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.6.1" />
 	</ItemGroup>
 	<ItemGroup>
-	  <Folder Include="Features\" />
+	  <Folder Include="Features\AccountContext\Commands\" />
+	  <Folder Include="Features\AccountContext\Query\" />
+	  <Folder Include="Features\AccountContext\Dto\" />
 	  <Folder Include="Services\" />
 	</ItemGroup>
 	<ItemGroup>

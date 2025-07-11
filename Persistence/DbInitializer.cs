@@ -1,5 +1,6 @@
 ﻿using Application.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Persistence.Seeders;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,6 +18,7 @@ namespace Persistence
             await  dbContext.Database.MigrateAsync();
 
             // Запускаем сидер
+           await RoleSeeder.SeedAsync(dbContext);
           
 
         }

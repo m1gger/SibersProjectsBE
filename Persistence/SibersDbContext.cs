@@ -12,13 +12,14 @@ namespace Persistence
         public SibersDbContext(DbContextOptions<SibersDbContext> options) : base(options)
         {
         }
-        public override DbSet<User> Users { get; set; }
-        public override DbSet<Role> Roles { get; set; }
+        public  DbSet<User> Users { get; set; }
+        public  DbSet<Role> Roles { get; set; }
         public DbSet<Project> Projects { get; set; }
         public DbSet<Company> Companies { get; set; }
         public DbSet<ProjectUsers> ProjectUsers { get; set; }
         public DbSet<ProjectTask> ProjectTasks { get; set; }
         public DbSet<ProjectCompany> ProjectCompanies { get; set; }
+        public DbSet<TaskUser> TaskUsers { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

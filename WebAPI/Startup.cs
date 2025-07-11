@@ -123,6 +123,12 @@ namespace WebAPI
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            if (string.IsNullOrEmpty(env.WebRootPath))
+                env.WebRootPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
+
+            if (!Directory.Exists(env.WebRootPath))
+                Directory.CreateDirectory(env.WebRootPath);
+
             app.UseDeveloperExceptionPage();
             app.UseSwagger();
             app.UseSwaggerUI(c =>
@@ -134,6 +140,7 @@ namespace WebAPI
             app.UseRouting();
 
             app.UseHttpsRedirection();
+            app.UseStaticFiles();
             app.UseAuthentication();
             app.UseAuthorization();
 

@@ -19,6 +19,7 @@ namespace Domain.Entities
         public virtual List<ProjectUsers> ProjectUsers { get; set; } = new List<ProjectUsers>();
         public virtual List<ProjectTask> Tasks { get; set; } = new List<ProjectTask>();
         public virtual List<ProjectCompany> ProjectCompanies { get; set; } = new List<ProjectCompany>();
+        public virtual List<ProjectDocument> ProjectDocuments { get; set; }= new List<ProjectDocument>();
 
     }
 }

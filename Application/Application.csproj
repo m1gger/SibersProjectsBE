@@ -17,8 +17,6 @@
 	<ItemGroup>
 	  <Folder Include="Features\AccountContext\Query\" />
 	  <Folder Include="Features\EmployeContext\Commands\" />
-	  <Folder Include="Features\TaskContext\Query\" />
-	  <Folder Include="Features\TaskContext\Dto\" />
 	</ItemGroup>
 	<ItemGroup>
 	  <ProjectReference Include="..\Domain\Domain.csproj" />

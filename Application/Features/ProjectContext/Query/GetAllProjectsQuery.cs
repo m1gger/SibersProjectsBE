@@ -14,7 +14,7 @@ namespace Application.Features.ProjectContext.Query
     public class GetAllProjectsQuery : PagedQuery, IRequest<PagedDto<ProjectDto>>
     {
         public string? Search { get; set; } 
-        public int? Priorit { get; set; }
+        public int? Priority { get; set; }
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
         public int? LeaderId { get; set; }
@@ -69,9 +69,9 @@ namespace Application.Features.ProjectContext.Query
                 query = query.Where(p => p.Name.Contains(request.Search) || p.Description.Contains(request.Search));
             }
 
-            if (request.Priorit.HasValue)
+            if (request.Priority.HasValue)
             {
-                query = query.Where(p => p.Priority == request.Priorit.Value);
+                query = query.Where(p => p.Priority == request.Priority.Value);
             }
 
             if (request.StartDate.HasValue)

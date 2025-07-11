@@ -14,6 +14,7 @@ namespace Persistence
             services.AddDbContext<SibersDbContext>(options => options
                 .UseSqlServer(connectionString)
                 .UseLazyLoadingProxies());
+            
 
 
             services.AddScoped<ISibersDbContext,SibersDbContext>();

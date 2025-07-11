@@ -1,5 +1,7 @@
 using WebAPI;
 using Persistence;
+using Microsoft.AspNetCore.Identity;
+using Domain.Entities;
 
 public class Program
 {
@@ -14,7 +16,9 @@ public class Program
             try
             {
                 var context = serviceProvider.GetRequiredService<SibersDbContext>();
-                await DbInitializer.InitializeAsync(context);
+                var userManager = serviceProvider.GetRequiredService<UserManager<User>>();
+                await DbInitializer.InitializeAsync(context,userManager);
+             
             }
             catch (Exception exception)
             {

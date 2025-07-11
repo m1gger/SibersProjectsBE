@@ -1,4 +1,6 @@
 ﻿using Application.Interfaces;
+using Domain.Entities;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Persistence.Seeders;
 using System;
@@ -11,7 +13,7 @@ namespace Persistence
 {
     public static class  DbInitializer
     {
-        public static async Task InitializeAsync(ISibersDbContext context)
+        public static async Task InitializeAsync(ISibersDbContext context,UserManager<User> userManager)
         {
             // Применяем миграции
             var dbContext = (SibersDbContext)context;
@@ -19,7 +21,8 @@ namespace Persistence
 
             // Запускаем сидер
            await RoleSeeder.SeedAsync(dbContext);
-          
+           await UserSeeder.SeedAsync(dbContext, userManager);
+
 
         }
     }

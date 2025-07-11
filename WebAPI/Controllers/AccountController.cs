@@ -8,6 +8,7 @@ namespace WebAPI.Controllers
     public class AccountController : BaseApiControllers
     {
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> Register([FromBody] RegisterCommand request)
         {
 
@@ -16,6 +17,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> Login([FromBody] LoginCommand request)
         {
             var res = await Mediator.Send(request);

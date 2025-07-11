@@ -34,7 +34,7 @@ namespace WebAPI.Controllers
 
         [HttpGet]
         [Authorize]
-        public async Task<IActionResult> GetAllProjects(GetAllProjectsQuery query)
+        public async Task<IActionResult> GetAllProjects([FromQuery] GetAllProjectsQuery query)
         {
             var res = await Mediator.Send(query);
             return Ok(res);

@@ -23,6 +23,7 @@ namespace Application
             services.AddTransient<IAuthorizeService, AuthorizeService>();
             services.AddHttpContextAccessor();
             services.AddScoped<ICurrentUserService, CurrentUserService>();
+            services.AddScoped<IFileService, FileService>();
             // Register application services here
             // Example: services.AddTransient<IMyService, MyService>();
             return services;

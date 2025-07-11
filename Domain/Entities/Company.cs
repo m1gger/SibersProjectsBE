@@ -10,7 +10,7 @@ namespace Domain.Entities
     {
         public int Id { get; set; }
         public string Name { get; set; } = string.Empty;
-        public List<ProjectCompany> ProjectCompanies { get; set; } = new List<ProjectCompany>();
+        public virtual List<ProjectCompany> ProjectCompanies { get; set; } = new List<ProjectCompany>();
 
 
     }

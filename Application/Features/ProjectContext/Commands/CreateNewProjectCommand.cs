@@ -15,7 +15,6 @@ namespace Application.Features.ProjectContext.Commands
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public int Priority { get; set; }
-
         public int LeaderUserId { get; set; }
          
     }
@@ -55,7 +54,7 @@ namespace Application.Features.ProjectContext.Commands
             };
             project.ProjectCompanies.Add(projectCustomer);
             project.ProjectCompanies.Add(projectContractor);
-           await _dbContext.Projects.AddAsync(project);
+            await _dbContext.Projects.AddAsync(project);
             await _dbContext.SaveChangesAsync(cancellationToken);
             return Unit.Value;
 

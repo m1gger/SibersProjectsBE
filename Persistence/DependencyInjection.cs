@@ -11,8 +11,10 @@ namespace Persistence
         public static IServiceCollection AddPersistence(this IServiceCollection services, IConfiguration configuration) 
         {
             var connectionString = configuration.GetConnectionString("DefaultConnection");
-            services.AddDbContext<SibersDbContext>(options =>
-                options.UseSqlServer(connectionString));
+            services.AddDbContext<SibersDbContext>(options => options
+                .UseSqlServer(connectionString)
+                .UseLazyLoadingProxies());
+
 
             services.AddScoped<ISibersDbContext,SibersDbContext>();
             return services;

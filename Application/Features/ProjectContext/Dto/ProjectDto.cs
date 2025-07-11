@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain.Entities
+namespace Application.Features.ProjectContext.Dto
 {
-    public class Project
+    class ProjectDto
     {
         public int Id { get; set; }
         public string Name { get; set; } = string.Empty;
@@ -15,10 +15,10 @@ namespace Domain.Entities
         public DateTime EndDate { get; set; }
         public int Priority { get; set; }
         public int LeaderUserId { get; set; }
-        public virtual User Leader { get; set; } = new User();
-        public virtual List<ProjectUsers> ProjectUsers { get; set; } = new List<ProjectUsers>();
-        public virtual List<ProjectTask> Tasks { get; set; } = new List<ProjectTask>();
-        public virtual List<ProjectCompany> ProjectCompanies { get; set; } = new List<ProjectCompany>();
-
+        public string LeaderUserName { get; set; } = string.Empty;
+        public int CustomerCompamyId { get;set; }
+        public string CustomerCompanyName { get; set; } = string.Empty;
+        public int ContructorCompanyId { get; set; }
+        public string ContructorCompanyName { get; set; } = string.Empty;
     }
 }

@@ -58,14 +58,14 @@ namespace Application.Services
             return tokenHandler.WriteToken(token);
         }
 
-        public async Task<User> ValidateUserAsync(string phoneNumber, string password)
+        public async Task<User> ValidateUserAsync(string username, string password)
         {
-            if (string.IsNullOrWhiteSpace(phoneNumber) || string.IsNullOrWhiteSpace(password))
+            if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password))
             {
                 throw new UnauthorizedAccessException("Error: Phone number or password cannot be empty.");
             }
 
-            var user = await _userManager.Users.FirstOrDefaultAsync(u => u.PhoneNumber == phoneNumber || u.UserName == phoneNumber);
+            var user = await _userManager.Users.FirstOrDefaultAsync(u => u.UserName == username ||u.Email==username);
             if (user == null)
             {
                 throw new UnauthorizedAccessException("Error: User with this phone number was not found.");
@@ -80,9 +80,9 @@ namespace Application.Services
             return user;
         }
 
-        public async Task<LoginDto> LoginAsync(string phoneNumber, string password )
+        public async Task<LoginDto> LoginAsync(string username, string password )
         {
-            var user = await ValidateUserAsync(phoneNumber, password);
+            var user = await ValidateUserAsync(username, password);
 
             if (user == null) throw new UnauthorizedAccessException("Invalid phone number or password");
            
@@ -98,21 +98,7 @@ namespace Application.Services
             };
         }
 
-        public async Task<string> RegisterAsync(string phoneNumber, string password, string role)
-        {
-            var existingUser = await _userManager.Users.FirstOrDefaultAsync(u => u.PhoneNumber == phoneNumber);
-            if (existingUser != null) throw new InvalidOperationException("Phone number is already registered");
-
-            var user = new User { PhoneNumber = phoneNumber };
-            var result = await _userManager.CreateAsync(user, password);
-
-            if (!result.Succeeded)
-                throw new InvalidOperationException($"Registration failed: {string.Join(", ", result.Errors.Select(e => e.Description))}");
-
-            await _userManager.AddToRoleAsync(user, role);
-
-            return await GenerateJwtTokenAsync(user);
-        }
+       
 
       
 

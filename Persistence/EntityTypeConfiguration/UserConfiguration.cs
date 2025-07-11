@@ -13,16 +13,12 @@ namespace Persistence.EntityTypeConfiguration
                 .ValueGeneratedOnAdd()
                 .IsRequired();
             builder.Property(u => u.Email)
-                .IsRequired()
                 .HasMaxLength(256);
             builder.Property(u => u.Name)
-                .IsRequired()
                 .HasMaxLength(100);
             builder.Property(u => u.LastName)
-                .IsRequired()
                 .HasMaxLength(100);
             builder.Property(u => u.Patronymic)
-                .IsRequired()
                 .HasMaxLength(100);
             builder.HasMany(u => u.ProjectUsers)
                 .WithOne(pu => pu.User)

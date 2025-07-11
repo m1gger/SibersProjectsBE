@@ -9,9 +9,9 @@ namespace Domain.Entities
 {
     public class User : IdentityUser<int>
     {
-        public string Name { get; set; }
-        public string LastName { get; set; }
-        public string Patronymic { get; set; }
+        public string? Name { get; set; }
+        public string? LastName { get; set; }
+        public string? Patronymic { get; set; }
         public virtual List<ProjectUsers> ProjectUsers { get; set; } = new List<ProjectUsers>();
 
         public virtual List<Project> ProjectsAsLeader { get; set; } = new List<Project>();

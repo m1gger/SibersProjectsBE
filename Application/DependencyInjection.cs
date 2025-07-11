@@ -4,6 +4,8 @@ using Microsoft.Extensions.Configuration;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using Application.Common.Behaivors;
+using Application.Interfaces;
+using Application.Services;
 
 
 namespace Application
@@ -18,6 +20,9 @@ namespace Application
             });
             services.AddValidatorsFromAssemblies(new[] { Assembly.GetExecutingAssembly() });
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+            services.AddTransient<IAuthorizeService, AuthorizeService>();
+            services.AddHttpContextAccessor();
+            services.AddScoped<ICurrentUserService, CurrentUserService>();
             // Register application services here
             // Example: services.AddTransient<IMyService, MyService>();
             return services;

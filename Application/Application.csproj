@@ -15,10 +15,15 @@
 		<PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.6.1" />
 	</ItemGroup>
 	<ItemGroup>
-	  <Folder Include="Features\AccountContext\Commands\" />
 	  <Folder Include="Features\AccountContext\Query\" />
-	  <Folder Include="Features\AccountContext\Dto\" />
-	  <Folder Include="Services\" />
+	  <Folder Include="Features\CompanyContext\Commands\" />
+	  <Folder Include="Features\CompanyContext\Query\" />
+	  <Folder Include="Features\CompanyContext\Dto\" />
+	  <Folder Include="Features\ProjectContext\Query\" />
+	  <Folder Include="Features\ProjectContext\Dto\" />
+	  <Folder Include="Features\TaskContext\Commans\" />
+	  <Folder Include="Features\TaskContext\Query\" />
+	  <Folder Include="Features\TaskContext\Dto\" />
 	</ItemGroup>
 	<ItemGroup>
 	  <ProjectReference Include="..\Domain\Domain.csproj" />

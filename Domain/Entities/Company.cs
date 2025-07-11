@@ -12,5 +12,6 @@ namespace Domain.Entities
         public string Name { get; set; } = string.Empty;
         public List<ProjectCompany> ProjectCompanies { get; set; } = new List<ProjectCompany>();
 
+
     }
 }

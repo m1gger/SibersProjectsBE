@@ -16,10 +16,8 @@ namespace Domain.Entities
         public int Priority { get; set; }
         public int ProjectId { get; set; }
         public Project Project { get; set; } = new Project();
-        public int AssignedUserId { get; set; }
-        public User AssignedUser { get; set; } = new User();
-        public int LeaderUserId { get; set; }
-        public User Leader { get; set; } = new User();
+        public List<TaskUser> TaskUsers { get; set; } = new List<TaskUser>();
+
         public TaskStatusEnum TaskStatus { get; set; } = TaskStatusEnum.NotStarted;
 
 

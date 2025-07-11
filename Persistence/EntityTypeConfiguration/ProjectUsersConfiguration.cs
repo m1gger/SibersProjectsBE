@@ -12,11 +12,11 @@ namespace Persistence.EntityTypeConfiguration
             builder.HasOne(pu => pu.Project)
                 .WithMany(p => p.ProjectUsers)
                 .HasForeignKey(pu => pu.ProjectId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.Restrict);
             builder.HasOne(pu => pu.User)
                 .WithMany(u => u.ProjectUsers)
                 .HasForeignKey(pu => pu.UserId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

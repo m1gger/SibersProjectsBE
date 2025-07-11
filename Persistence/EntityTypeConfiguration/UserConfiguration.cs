@@ -28,14 +28,14 @@ namespace Persistence.EntityTypeConfiguration
                 .WithOne(pu => pu.User)
                 .HasForeignKey(pu => pu.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
-            builder.HasMany(c => c.AssignedTasks)
-              .WithOne(p => p.AssignedUser)
-              .HasForeignKey(p => p.AssignedUserId)
-              .OnDelete(DeleteBehavior.Cascade);
-            builder.HasMany(c => c.LeaderTasks)
+            builder.HasMany(u=>u.TaskUsers)
+                .WithOne(tu=>tu.User)
+                .HasForeignKey(tu => tu.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+            builder.HasMany(u => u.ProjectsAsLeader)
                 .WithOne(p => p.Leader)
                 .HasForeignKey(p => p.LeaderUserId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
 
         }
     }

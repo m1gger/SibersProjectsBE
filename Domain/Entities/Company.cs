@@ -10,7 +10,7 @@ namespace Domain.Entities
     {
         public int Id { get; set; }
         public string Name { get; set; } = string.Empty;
-        public List<Project> ProjectsAsCustomer { get; set; } = new List<Project>();
-        public List<Project> ProjectsAsContractor { get; set; } = new List<Project>();
+        public List<ProjectCompany> ProjectCompanies { get; set; } = new List<ProjectCompany>();
+
     }
 }

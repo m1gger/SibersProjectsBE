@@ -17,6 +17,9 @@ namespace Persistence
         public DbSet<Project> Projects { get; set; }
         public DbSet<Company> Companies { get; set; }
         public DbSet<ProjectUsers> ProjectUsers { get; set; }
+        public DbSet<ProjectTask> ProjectTasks { get; set; }
+        public DbSet<ProjectCompany> ProjectCompanies { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

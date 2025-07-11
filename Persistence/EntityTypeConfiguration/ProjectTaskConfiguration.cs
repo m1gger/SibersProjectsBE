@@ -23,14 +23,7 @@ namespace Persistence.EntityTypeConfiguration
                  .WithMany(p => p.Tasks)
                  .HasForeignKey(pt => pt.ProjectId)
                  .OnDelete(DeleteBehavior.Restrict);
-            builder.HasOne(pt=>pt.Leader)
-                .WithMany(p => p.LeaderTasks)
-                .HasForeignKey(pt => pt.LeaderUserId)
-                .OnDelete(DeleteBehavior.Cascade);
-            builder.HasOne(pt=>pt.AssignedUser)
-                .WithMany(p=>p.AssignedTasks)
-                .HasForeignKey(pt => pt.AssignedUserId)
-                .OnDelete(DeleteBehavior.Cascade);
+         
         }
     }
 }

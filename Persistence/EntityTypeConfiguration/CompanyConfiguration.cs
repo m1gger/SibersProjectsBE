@@ -16,15 +16,12 @@ namespace Persistence.EntityTypeConfiguration
             builder.Property(c => c.Name)
                 .IsRequired()
                 .HasMaxLength(100);
-    
-            builder.HasMany(c => c.ProjectsAsCustomer)
-                .WithOne(p => p.CustomerCompany)
-                .HasForeignKey(p => p.CustomerCompanyId)
-                .OnDelete(DeleteBehavior.Cascade);
-            builder.HasMany(c => c.ProjectsAsContractor)
-                .WithOne(p => p.ContractorCompany)
-                .HasForeignKey(p => p.ContractorCompanyId)
-                .OnDelete(DeleteBehavior.Restrict);
+            builder.HasMany(c => c.ProjectCompanies)
+            .WithOne(pc => pc.Company)
+            .HasForeignKey(pc => pc.CompanyId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+
         }
     }
 }

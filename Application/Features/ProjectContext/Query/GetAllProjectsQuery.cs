@@ -7,6 +7,7 @@ using MediatR;
 using Application.Features.ProjectContext.Dto;
 using Application.Interfaces;
 using Application.Common.Helpers;
+using Microsoft.AspNetCore.Identity;
 
 namespace Application.Features.ProjectContext.Query
 {
@@ -25,19 +26,43 @@ namespace Application.Features.ProjectContext.Query
     public class GetAllProjectsQueryHandler : IRequestHandler<GetAllProjectsQuery, PagedDto<ProjectDto>>
     {
         private readonly ISibersDbContext _dbContext;
-        public GetAllProjectsQueryHandler(ISibersDbContext dbContext)
+        private readonly ICurrentUserService _currentUserService;
+        private readonly UserManager<User> _userManager;
+
+        public GetAllProjectsQueryHandler(ISibersDbContext dbContext, ICurrentUserService currentUserService, UserManager<User> userManager)
         {
             _dbContext = dbContext;
+            _userManager = userManager;
+            _currentUserService = currentUserService;
         }
 
         public async Task<PagedDto<ProjectDto>> Handle(GetAllProjectsQuery request, CancellationToken cancellationToken)
         {
+           var user = await _dbContext.Users
+                .AsNoTracking()
+                .FirstOrDefaultAsync(u => u.Id == _currentUserService.UserId, cancellationToken);
+             var roles= await _userManager.GetRolesAsync(user);
+             var roleEnum = RolesHelper.GetUserRole(roles);
+
+
             var query = _dbContext.Projects
                 .Include(p => p.Leader)
                 .Include(p => p.ProjectCompanies)
                     .ThenInclude(pc => pc.Company)
                 .AsNoTracking()
+                .AsSplitQuery()
                 .AsQueryable();
+
+            switch (roleEnum) 
+            {
+                case UserRoleEnum.Employer:
+                    query = query.Where(p => p.ProjectUsers.Any(pu => pu.UserId == user.Id));
+                    break;
+                case UserRoleEnum.Manager:
+                    //if manager can be leader and employer in project 
+                    query = query.Where(p => p.LeaderUserId == user.Id || p.ProjectUsers.Any(pu => pu.UserId == user.Id));
+                    break;
+            }
 
             if (!string.IsNullOrEmpty(request.Search))
             {

@@ -1,5 +1,7 @@
 ﻿using Application.Common.Attirbutes;
+using Application.Common.Dto;
 using Application.Features.ProjectContext.Commands;
+using Application.Features.ProjectContext.Dto;
 using Application.Features.ProjectContext.Query;
 using Domain.Enums;
 using Microsoft.AspNetCore.Authorization;
@@ -68,7 +70,7 @@ namespace WebAPI.Controllers
         /// <returns>PagedDto<ProjectDto></returns>
         [HttpGet]
         [Authorize]
-        public async Task<IActionResult> GetAllProjects([FromQuery] GetAllProjectsQuery query)
+        public async Task<ActionResult<PagedDto<ProjectDto>>> GetAllProjects([FromQuery] GetAllProjectsQuery query)
         {
             var res = await Mediator.Send(query);
             return Ok(res);

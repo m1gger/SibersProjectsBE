@@ -4,6 +4,8 @@ using Application.Features.CompanyContext.Query;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Domain.Enums;
+using Application.Common.Dto;
+using Application.Features.CompanyContext.Dto;
 
 
 namespace WebAPI.Controllers
@@ -29,7 +31,7 @@ namespace WebAPI.Controllers
         /// <returns>PagedDto<CompanyDto></returns>
         [HttpGet]
         [Authorize]
-        public async Task<IActionResult> GetAllCompanies()
+        public async Task<ActionResult<PagedDto<CompanyDto>>> GetAllCompanies()
         {
             var res = await Mediator.Send(new GetAllCompaniesQuery());
             return Ok(res);

@@ -1,4 +1,6 @@
-﻿using Application.Features.ManagerContext.Query;
+﻿using Application.Common.Dto;
+using Application.Features.ManagerContext.Dto;
+using Application.Features.ManagerContext.Query;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,7 +17,7 @@ namespace WebAPI.Controllers
         /// <returns>paged Dto of managers</returns>
         [HttpGet]
         [Authorize]
-        public async Task<IActionResult> GetAllManagers([FromQuery] GetAllManagersQuery query)
+        public async Task<ActionResult<PagedDto<ManagerDto>>> GetAllManagers([FromQuery] GetAllManagersQuery query)
         {
             var res = await Mediator.Send(query);
             return Ok(res);

@@ -4,6 +4,8 @@ using Application.Features.TaskContext.Query;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Domain.Enums;
+using Application.Common.Dto;
+using Application.Features.TaskContext.Dto;
 
 namespace WebAPI.Controllers
 {
@@ -65,7 +67,7 @@ namespace WebAPI.Controllers
         /// <returns>An <see cref="IActionResult"/> containing the list of tasks that match the query parameters.</returns>
         [HttpGet]
         [Authorize]
-        public async Task<IActionResult> GetAllTasks([FromQuery] GetAllTasksQuery query)
+        public async Task<ActionResult<PagedDto<TaskDto>>> GetAllTasks([FromQuery] GetAllTasksQuery query)
         {
             var res = await Mediator.Send(query);
             return Ok(res);

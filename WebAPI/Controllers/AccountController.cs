@@ -40,5 +40,7 @@ namespace WebAPI.Controllers
             var res = await Mediator.Send(query);
             return Ok(res);
         }
+
+        // need to implement update and delete
     }
 }

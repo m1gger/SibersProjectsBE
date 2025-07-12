@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Application.Common.Attirbutes;
 using Domain.Enums;
 using System.Threading.Tasks;
+using Application.Features.AccountContext.Query;
 
 namespace WebAPI.Controllers
 {
@@ -27,9 +28,17 @@ namespace WebAPI.Controllers
 
         [HttpGet]
         [Authorize]
-        public async Task<IActionResult> GetStr() 
+        public async Task<IActionResult> GetStr()
         {
             return Ok("fdsdfsd");
+        }
+
+        [HttpGet]
+        [AuthorizeRole(UserRoleEnum.Director)]
+        public async Task<IActionResult> GetAllUsers([FromQuery]GetAllUsersQuery query)
+        {
+            var res = await Mediator.Send(query);
+            return Ok(res);
         }
     }
 }

@@ -65,6 +65,7 @@ namespace Application.Features.EmployeContext.Query
                 employers = employers.Where(u =>
                     u.Name.Contains(query.Search) ||
                     u.LastName.Contains(query.Search)||
+                    u.UserName.Contains(query.Search) ||
                     u.Email.Contains(query.Search));
             }
 
@@ -94,7 +95,8 @@ namespace Application.Features.EmployeContext.Query
                 {
                     Id = u.Id,
                     FullName = u.GetUserFullName(),
-                    Email = u.Email
+                    Email = u.Email,
+                    UserName = u.UserName,
                 })
                 .ToListAsync(cancellationToken);
 

@@ -15,8 +15,9 @@
 		<PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.6.1" />
 	</ItemGroup>
 	<ItemGroup>
-	  <Folder Include="Features\AccountContext\Query\" />
 	  <Folder Include="Features\EmployeContext\Commands\" />
+	  <Folder Include="Features\ManagerContext\Commands\" />
+	  <Folder Include="Features\ManagerContext\Query\" />
 	</ItemGroup>
 	<ItemGroup>
 	  <ProjectReference Include="..\Domain\Domain.csproj" />

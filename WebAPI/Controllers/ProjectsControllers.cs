@@ -1,5 +1,7 @@
-﻿using Application.Features.ProjectContext.Commands;
+﻿using Application.Common.Attirbutes;
+using Application.Features.ProjectContext.Commands;
 using Application.Features.ProjectContext.Query;
+using Domain.Enums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,7 +11,8 @@ namespace WebAPI.Controllers
     {
         //using post ensted of post because of the List<Id> parameters
         [HttpPost]
-        [Authorize]
+        [AuthorizeRole(UserRoleEnum.Manager, UserRoleEnum.Director)]
+
         public async Task<IActionResult> DeleteEmpoyersFromProject([FromQuery] RemoveEmployersFromProjectCommand command)
         {
             var res = await Mediator.Send(command);
@@ -17,14 +20,17 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost]
-        [Authorize]
+        [AuthorizeRole(UserRoleEnum.Manager, UserRoleEnum.Director)]
+
         public async Task<IActionResult> AddEmployersToProject([FromQuery] AddEmployeToProjectCommand command)
         {
             var res = await Mediator.Send(command);
             return Ok(res);
         }
+
         [HttpPost]
-        [Authorize]
+        [AuthorizeRole( UserRoleEnum.Director)]
+
         public async Task<IActionResult> CreateNewProjectCommand([FromForm] CreateNewProjectCommand command) 
         {
 

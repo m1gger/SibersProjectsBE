@@ -8,7 +8,7 @@ using System.IdentityModel.Tokens.Jwt;
 namespace Application.Common.Attirbutes
 {
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = false, Inherited = true)]
-    class AuthorizeRoleAttribute : AuthorizeAttribute, IAsyncActionFilter
+    public class AuthorizeRoleAttribute : AuthorizeAttribute, IAsyncActionFilter
     {
         private readonly UserRoleEnum[] _roles;
 

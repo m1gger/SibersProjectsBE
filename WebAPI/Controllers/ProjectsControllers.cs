@@ -1,5 +1,7 @@
 ﻿using Application.Common.Attirbutes;
+using Application.Common.Dto;
 using Application.Features.ProjectContext.Commands;
+using Application.Features.ProjectContext.Dto;
 using Application.Features.ProjectContext.Query;
 using Domain.Enums;
 using Microsoft.AspNetCore.Authorization;
@@ -10,6 +12,15 @@ namespace WebAPI.Controllers
     public class ProjectsControllers : BaseApiControllers
     {
         //using post ensted of post because of the List<Id> parameters
+        /// <summary>
+        /// Removes employers from a project based on the specified command.
+        /// </summary>
+        /// <remarks>This action requires the caller to have either the Manager or Director role. The
+        /// command should include valid project and employer identifiers.</remarks>
+        /// <param name="command">The command containing the project identifier and the list of employer IDs to be removed. This parameter
+        /// must not be null.</param>
+        /// <returns>An <see cref="IActionResult"/> indicating the result of the operation. Typically, this will be an HTTP 200
+        /// response with the operation result.</returns>
         [HttpPost]
         [AuthorizeRole(UserRoleEnum.Manager, UserRoleEnum.Director)]
 
@@ -19,6 +30,16 @@ namespace WebAPI.Controllers
             return Ok(res);
         }
 
+        /// <summary>
+        /// Adds one or more employers to a specified project.
+        /// </summary>
+        /// <remarks>This action requires the caller to have either the Manager or Director role. Ensure
+        /// that the <paramref name="command"/> contains valid data, including a non-empty list of employer identifiers
+        /// and a valid project identifier.</remarks>
+        /// <param name="command">The command containing the details of the employers to be added and the target project. This includes the
+        /// project identifier and a list of employer identifiers.</param>
+        /// <returns>An <see cref="IActionResult"/> indicating the result of the operation. Typically, this will be an HTTP 200
+        /// response with the result of the operation if successful.</returns>
         [HttpPost]
         [AuthorizeRole(UserRoleEnum.Manager, UserRoleEnum.Director)]
 
@@ -28,6 +49,11 @@ namespace WebAPI.Controllers
             return Ok(res);
         }
 
+        /// <summary>
+        /// Creates a new project based on the provided command.
+        /// </summary>
+        /// <param name="command"></param>
+        /// <returns>project id</returns>
         [HttpPost]
         [AuthorizeRole( UserRoleEnum.Director)]
 
@@ -37,10 +63,14 @@ namespace WebAPI.Controllers
             var res = await Mediator.Send(command);
             return Ok(res);
         }
-
+        /// <summary>
+        /// Gets all projects based on the specified query parameters with pagination and filtering options.
+        /// </summary>
+        /// <param name="query"></param>
+        /// <returns>PagedDto<ProjectDto></returns>
         [HttpGet]
         [Authorize]
-        public async Task<IActionResult> GetAllProjects([FromQuery] GetAllProjectsQuery query)
+        public async Task<ActionResult<PagedDto<ProjectDto>>> GetAllProjects([FromQuery] GetAllProjectsQuery query)
         {
             var res = await Mediator.Send(query);
             return Ok(res);

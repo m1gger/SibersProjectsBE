@@ -4,23 +4,34 @@ using Application.Features.CompanyContext.Query;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Domain.Enums;
+using Application.Common.Dto;
+using Application.Features.CompanyContext.Dto;
 
 
 namespace WebAPI.Controllers
 {
     public class CompanyController : BaseApiControllers
     {
+        /// <summary>
+        /// Create a new company
+        /// </summary>
+        /// <param name="command"></param>
+        /// <returns>200 ok</returns>
         [HttpPost]
         [AuthorizeRole(UserRoleEnum.Director)]
+        
         public async Task<IActionResult> CreateNewCompany([FromBody] AddNewCompanyCommands command)
         {
             var res = await Mediator.Send(command);
             return Ok(res);
         }
-
+        /// <summary>
+        /// Get all companies
+        /// </summary>
+        /// <returns>PagedDto<CompanyDto></returns>
         [HttpGet]
         [Authorize]
-        public async Task<IActionResult> GetAllCompanies()
+        public async Task<ActionResult<PagedDto<CompanyDto>>> GetAllCompanies()
         {
             var res = await Mediator.Send(new GetAllCompaniesQuery());
             return Ok(res);

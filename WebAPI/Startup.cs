@@ -1,13 +1,14 @@
-﻿using Application.Configuration;
+﻿using Application;
+using Application.Configuration;
 using Domain.Entities;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
-using Persistence;
-using System.Text;
-using System.Security.Claims;
 using Microsoft.OpenApi.Models;
-using Application;
+using Persistence;
+using System.Reflection;
+using System.Security.Claims;
+using System.Text;
 namespace WebAPI
 {
     public class Startup
@@ -86,6 +87,9 @@ namespace WebAPI
 
             services.AddSwaggerGen(config =>
             {
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                config.IncludeXmlComments(xmlPath);
                 config.SwaggerDoc("v1", new OpenApiInfo
                 {
                     Title = "Sibers TEST API",

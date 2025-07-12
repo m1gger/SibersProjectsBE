@@ -20,5 +20,8 @@ namespace Application.Features.ProjectContext.Dto
         public string CustomerCompanyName { get; set; } = string.Empty;
         public int ContructorCompanyId { get; set; }
         public string ContructorCompanyName { get; set; } = string.Empty;
+        public List<ProjectUsersDto>? ProjectUsers { get; set; } 
+        public List<ProjectDocumentsDto>? ProjectDocuments { get; set; }
+
     }
 }

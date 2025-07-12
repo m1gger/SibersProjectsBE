@@ -64,7 +64,7 @@ namespace WebAPI.Controllers
             return Ok(res);
         }
         /// <summary>
-        /// Gets all projects based on the specified query parameters with pagination and filtering options.
+        /// Gets all projects based on the specified query parameters with pagination and filtering options. without details without docs and users
         /// </summary>
         /// <param name="query"></param>
         /// <returns>PagedDto<ProjectDto></returns>
@@ -74,6 +74,23 @@ namespace WebAPI.Controllers
         {
             var res = await Mediator.Send(query);
             return Ok(res);
+        }
+        /// <summary>
+        /// Retrieves detailed information about a project based on the specified query parameters.
+        /// </summary>
+        /// <remarks>This method requires the caller to be authorized. Ensure the appropriate
+        /// authentication and authorization mechanisms are in place before invoking this method.</remarks>
+        /// <param name="query">The query parameters used to filter and identify the project details to retrieve. Must not be null and must
+        /// contain valid criteria.</param>
+        /// <returns>An <see cref="ActionResult{T}"/> containing a <see cref="ProjectDto"/> object with the project's details.
+        /// Returns an HTTP 200 response if the operation is successful.</returns>
+        [HttpGet]
+        [Authorize]
+        public async Task<ActionResult<ProjectDto>> GetProjectDetails([FromQuery] GetProjectDetailsQuery query) 
+        {
+            var res = await Mediator.Send(query);
+            return Ok(res);
+
         }
 
 

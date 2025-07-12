@@ -46,11 +46,9 @@ namespace Application.Features.ProjectContext.Query
 
 
             var query = _dbContext.Projects
-                .Include(p => p.Leader)
-                .Include(p => p.ProjectCompanies)
-                    .ThenInclude(pc => pc.Company)
+           
+
                 .AsNoTracking()
-                .AsSplitQuery()
                 .AsQueryable();
 
             switch (roleEnum) 

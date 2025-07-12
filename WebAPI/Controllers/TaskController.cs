@@ -39,6 +39,13 @@ namespace WebAPI.Controllers
             return Ok(res);
         }
 
+        [HttpPatch]
+        [Authorize]
+        public async Task<IActionResult> UpdateTaskStatus([FromBody] UpdateTaskCommand command) 
+        {
+            var res = await Mediator.Send(command);
+            return Ok(res);
+        }
         /// update task status needs to be implemented
     }
 }

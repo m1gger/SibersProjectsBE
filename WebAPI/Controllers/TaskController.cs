@@ -1,4 +1,5 @@
 ﻿using Application.Features.TaskContext.Commans;
+using Application.Features.TaskContext.Query;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -25,6 +26,13 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> DeleteTask([FromQuery] DeleteTaskCommand command)
         {
             var res = await Mediator.Send(command);
+            return Ok(res);
+        }
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> GetAllTasks([FromQuery] GetAllTasksQuery query)
+        {
+            var res = await Mediator.Send(query);
             return Ok(res);
         }
     }

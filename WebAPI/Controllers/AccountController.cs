@@ -3,10 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Application.Common.Attirbutes;
 using Domain.Enums;
-using System.Threading.Tasks;
 using Application.Features.AccountContext.Query;
-using Application.Features.AccountContext.Dto;
-using Application.Common.Dto;
 
 namespace WebAPI.Controllers
 {
@@ -32,7 +29,7 @@ namespace WebAPI.Controllers
         /// <param name="request"></param>
         /// <returns>LoginDto</returns>
         [HttpPost]
-        public async Task<ActionResult<LoginDto>> Login([FromBody] LoginCommand request)
+        public async Task<IActionResult> Login([FromBody] LoginCommand request)
         {
             var res = await Mediator.Send(request);
             return Ok(res);
@@ -61,7 +58,7 @@ namespace WebAPI.Controllers
         /// as total count.</returns>
         [HttpGet]
         [AuthorizeRole(UserRoleEnum.Director)]
-        public async Task<ActionResult<PagedDto<UserDto>>> GetAllUsers([FromQuery]GetAllUsersQuery query)
+        public async Task<IActionResult> GetAllUsers([FromQuery]GetAllUsersQuery query)
         {
             var res = await Mediator.Send(query);
             return Ok(res);

@@ -1,6 +1,4 @@
-﻿using Application.Common.Dto;
-using Application.Features.EmployeContext.Dto;
-using Application.Features.EmployeContext.Query;
+﻿using Application.Features.EmployeContext.Query;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -19,7 +17,7 @@ namespace WebAPI.Controllers
         /// request fails.</returns>
         [HttpGet]
         [Authorize]
-        public async Task<ActionResult<PagedDto<EmpoyerDto>>> GetEmployers([FromQuery] GetAllEmployersQuery query)
+        public async Task<IActionResult> GetEmployers([FromQuery] GetAllEmployersQuery query)
         {
             var res = await Mediator.Send(query);
             return Ok(res);

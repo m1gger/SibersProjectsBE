@@ -32,7 +32,8 @@ namespace WebAPI
             {
                 options.AddPolicy("AllowLocalhost",
                     builder => builder
-                        .WithOrigins("http://localhost:3000", "www.localhost:3000") // твои фронты
+                        .SetIsOriginAllowed(origin => true)
+                        //.WithOrigins("http://localhost:3000", "www.localhost:3000") // твои фронты
                         .AllowAnyHeader()
                         .AllowAnyMethod()
                         .AllowCredentials());

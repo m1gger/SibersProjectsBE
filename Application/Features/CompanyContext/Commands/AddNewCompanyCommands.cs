@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Application.Interfaces;
+using FluentValidation;
 
 
 namespace Application.Features.CompanyContext.Commands
@@ -26,5 +27,17 @@ namespace Application.Features.CompanyContext.Commands
             await _context.SaveChangesAsync(cancellationToken);
             return Unit.Value;
         }
+    }
+
+
+    public class AddNewCompanyValidator : AbstractValidator<AddNewCompanyCommands>
+    {
+        public AddNewCompanyValidator()
+        {
+            RuleFor(x => x.Name)
+                .NotEmpty().WithMessage("Company name is required.").WithErrorCode("3001")
+                .MaximumLength(100).WithMessage("Company name cannot exceed 100 characters.").WithErrorCode("3002");
+        }
+
     }
 }

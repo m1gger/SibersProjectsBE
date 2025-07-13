@@ -98,13 +98,36 @@ namespace Application.Features.TaskContext.Commans
 
         public UpdateTaskCommandValidator(ISibersDbContext dbContext,ICurrentUserService currentUserService, UserManager<User> userManager)
         {
-            RuleFor(x => x.TaskId).NotEmpty().WithMessage("Task ID is required.");
-            RuleFor(x => x.StartDate).LessThanOrEqualTo(x => x.EndDate)
+            _sibersDbContext = dbContext;
+            _currentUserService = currentUserService;
+            _userManager = userManager;
+
+            RuleFor(x => x.TaskId)
+                .NotEmpty()
+                .WithMessage("Task ID is required.")
+                .WithErrorCode("3001");
+
+            RuleFor(x => x.StartDate)
+                .LessThanOrEqualTo(x => x.EndDate)
                 .When(x => x.StartDate.HasValue && x.EndDate.HasValue)
-                .WithMessage("Start date must be less than or equal to end date.");
+                .WithMessage("Start date must be less than or equal to end date.")
+                .WithErrorCode("3002");
+
+            RuleFor(x => x.TaskId)
+                .MustAsync(TaskMustExist)
+                .WithMessage("Task not found")
+                .WithErrorCode("3003");
+
             RuleFor(x => x.TaskId)
                 .MustAsync(TaskMustBeAppointedToUser)
-                .WithMessage("Task must be appointed to user");
+                .WithMessage("Task must be appointed to user")
+                .WithErrorCode("3004");
+
+            RuleFor(x => x.EmplpyerId.Value)
+                .MustAsync(UserMustExist)
+                .WithMessage("User must exist")
+                .When(x => x.EmplpyerId.HasValue)
+                .WithErrorCode("3005");
 
         }
 
@@ -124,6 +147,16 @@ namespace Application.Features.TaskContext.Commans
                 default:
                     return false;
             }
+        }
+
+        private async Task<bool> UserMustExist(int userId, CancellationToken cancellationToken)
+        {
+            return await _sibersDbContext.Users.AnyAsync(x => x.Id == userId, cancellationToken);
+        }
+
+        private async Task<bool> TaskMustExist(int taskId, CancellationToken cancellationToken)
+        {
+            return await _sibersDbContext.ProjectTasks.AnyAsync(x => x.Id == taskId, cancellationToken);
         }
     }
 }

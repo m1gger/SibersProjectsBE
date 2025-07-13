@@ -1,6 +1,8 @@
 ﻿using Application.Features.AccountContext.Dto;
 using Application.Interfaces;
 using MediatR;
+using FluentValidation;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.Features.AccountContext.Commands
 {
@@ -23,6 +25,25 @@ namespace Application.Features.AccountContext.Commands
             var res = await _authorize.LoginAsync(request.UserName, request.Password);
             return res;
            
+        }
+    }
+
+    public class LoginValidation : AbstractValidator<LoginCommand>
+    {
+        private readonly ISibersDbContext _dbContext;
+        
+        public LoginValidation(ISibersDbContext dbContext)
+        {
+            _dbContext = dbContext;
+            RuleFor(x => x.UserName).NotEmpty().WithMessage("User name is required.").WithErrorCode("405");
+            RuleFor(x => x.Password).NotEmpty().WithMessage("Password is required.").WithErrorCode("405");
+            RuleFor(x => x).MustAsync(UserMustExist).WithMessage("User not found ").WithErrorCode("404");
+        }
+
+        public async Task<bool> UserMustExist(LoginCommand command, CancellationToken cancellationToken) 
+        {
+           var res =await _dbContext.Users.AnyAsync(x => x.UserName == command.UserName);
+            return res;
         }
     }
 }

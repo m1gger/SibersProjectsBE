@@ -54,10 +54,16 @@ namespace Application.Features.TaskContext.Commans
             _context = context;
             _userManager = userManager;
             _currentUserService = currentUserService;
-            RuleFor(x => x.TaskId).NotEmpty().WithMessage("TaskId is required.");
+            RuleFor(x => x.TaskId)
+           .NotEmpty()
+           .WithMessage("TaskId is required.")
+           .WithErrorCode("3001");
+
             RuleFor(x => x.TaskId)
                 .MustAsync(TaskMustBeAppointedToUser)
-                .WithMessage("You do not have permission to delete this task.");
+                .WithMessage("You do not have permission to delete this task.")
+                .WithErrorCode("403");
+
         }
 
         private async Task<bool> TaskMustBeAppointedToUser(int TaskId, CancellationToken cancellationToken)

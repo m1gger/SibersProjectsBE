@@ -12,6 +12,8 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using FluentValidation.Results;
+using FluentValidation;
 
 namespace Application.Services
 {
@@ -84,10 +86,22 @@ namespace Application.Services
         {
             var user = await ValidateUserAsync(username, password);
 
-            if (user == null) throw new UnauthorizedAccessException("Invalid phone number or password");
-           
-           
-        
+            if (user == null)
+            {
+                throw new ValidationException(new List<FluentValidation.Results.ValidationFailure>
+                 {
+                    new FluentValidation.Results.ValidationFailure("UserNameOrPassword", "Invalid UserName number or password")
+                    {
+                        ErrorCode = "1001"
+                        
+                    }
+                });
+            }
+
+
+
+
+
             await _userManager.UpdateAsync(user);
             var token = await GenerateJwtTokenAsync(user);
 

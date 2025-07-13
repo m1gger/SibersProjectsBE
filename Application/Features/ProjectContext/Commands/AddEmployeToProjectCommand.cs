@@ -1,6 +1,9 @@
-﻿using MediatR;
-using Application.Interfaces;
+﻿using Application.Interfaces;
 using Domain.Entities;
+using FluentValidation;
+using MediatR;
+using Microsoft.EntityFrameworkCore;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace Application.Features.ProjectContext.Commands
 {
@@ -36,6 +39,51 @@ namespace Application.Features.ProjectContext.Commands
             await _context.SaveChangesAsync(cancellationToken);
             return Unit.Value;
         }
+
     }
+
+    public class AddEmployeToProjectValidation : AbstractValidator<AddEmployeToProjectCommand>
+    {
+        private readonly ISibersDbContext _dbContext;
+
+        public AddEmployeToProjectValidation(ISibersDbContext dbContext)
+        {
+            _dbContext = dbContext;
+
+            RuleFor(x => x.ProjectId)
+                .NotEmpty()
+                .WithMessage("Project ID is required.")
+                .WithErrorCode("405");
+
+            RuleFor(x => x.UserIds)
+                .NotEmpty()
+                .WithMessage("User IDs are required.")
+                .WithErrorCode("405");
+
+            RuleForEach(x => x.UserIds)
+                .MustAsync(UserMustExist)
+                .WithMessage("User not found")
+                .WithErrorCode("404");
+
+
+            RuleForEach(x => x.UserIds)
+                .MustAsync(async (command, userId, cancellationToken) =>
+                {
+                    return !await _dbContext.ProjectUsers
+                        .AnyAsync(pu => pu.UserId == userId && pu.ProjectId == command.ProjectId, cancellationToken);
+                })
+                .WithMessage("User is already assigned to the project")
+                .WithErrorCode("409")
+                .WithState((command, userId) => userId);
+                }
+
+        private async Task<bool> UserMustExist(int userId, CancellationToken cancellationToken)
+        {
+            return await _dbContext.Users.AnyAsync(x => x.Id == userId, cancellationToken);
+        }
+
+       
+    }
+
 
 }

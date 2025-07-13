@@ -62,13 +62,50 @@ namespace Application.Features.AccountContext.Commands
         {
             _userManager = userManager;
             _roleManager = roleManager;
-            RuleFor(x => x.UserName).NotEmpty().WithMessage("Username is required.");
-            RuleFor(x => x.Email).NotEmpty().EmailAddress().WithMessage("Valid email is required.");
-            RuleFor(x => x.Password).NotEmpty().MinimumLength(6).WithMessage("Password must be at least 6 characters long.");
-            RuleFor(x => x.Role).NotEmpty().WithMessage("Role is required.");
-            RuleFor(x => x.Email).MustAsync(BeUniqueEmail).WithMessage("Email must be unique.");
-            RuleFor(x => x.UserName).MustAsync(BeUniqueUserName).WithMessage("Username must be unique.");
-            RuleFor(x => x.Role).MustAsync(BeValidRole).WithMessage("Role must be valid.");
+            RuleFor(x => x.UserName)
+             .NotEmpty()
+             .WithMessage("Username is required.")
+             .WithErrorCode("2001");
+
+            RuleFor(x => x.Email)
+                .NotEmpty()
+                .WithMessage("Email is required.")
+                .WithErrorCode("2002");
+
+            RuleFor(x => x.Email)
+                .EmailAddress()
+                .WithMessage("Valid email is required.")
+                .WithErrorCode("2003");
+
+            RuleFor(x => x.Password)
+                .NotEmpty()
+                .WithMessage("Password is required.")
+                .WithErrorCode("2004");
+
+            RuleFor(x => x.Password)
+                .MinimumLength(6)
+                .WithMessage("Password must be at least 6 characters long.")
+                .WithErrorCode("2005");
+
+            RuleFor(x => x.Role)
+                .NotEmpty()
+                .WithMessage("Role is required.")
+                .WithErrorCode("2006");
+
+            RuleFor(x => x.Email)
+                .MustAsync(BeUniqueEmail)
+                .WithMessage("Email must be unique.")
+                .WithErrorCode("2007");
+
+            RuleFor(x => x.UserName)
+                .MustAsync(BeUniqueUserName)
+                .WithMessage("Username must be unique.")
+                .WithErrorCode("2008");
+
+            RuleFor(x => x.Role)
+                .MustAsync(BeValidRole)
+                .WithMessage("Role must be valid.")
+                .WithErrorCode("2009");
 
         }
         

@@ -9,6 +9,7 @@ using Persistence;
 using System.Reflection;
 using System.Security.Claims;
 using System.Text;
+using WebAPI.Middlewares;
 
 namespace WebAPI
 {
@@ -160,7 +161,8 @@ namespace WebAPI
             if (!Directory.Exists(env.WebRootPath))
                 Directory.CreateDirectory(env.WebRootPath);
 
-            app.UseDeveloperExceptionPage();
+           // app.UseDeveloperExceptionPage();
+            app.UseMiddleware<ExceptionMiddleware>();
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {

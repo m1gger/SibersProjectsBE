@@ -188,7 +188,14 @@ namespace WebAPI
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+
+                endpoints.MapMethods("{*path}", new[] { "OPTIONS" }, context =>
+                {
+                    context.Response.StatusCode = 200;
+                    return Task.CompletedTask;
+                });
             });
+            
         }
     }
 }

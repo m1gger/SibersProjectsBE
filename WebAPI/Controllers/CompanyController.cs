@@ -37,6 +37,22 @@ namespace WebAPI.Controllers
             return Ok(res);
         }
 
+        [HttpDelete]
+        [AuthorizeRole(UserRoleEnum.Director)]
+        public async Task<IActionResult> DeleteCompany([FromQuery] DeleteCompanyCommand companyCommand) 
+        {
+            var res = Mediator.Send(companyCommand);
+            return Ok(res);
+        }
+
+        [HttpPatch]
+        [AuthorizeRole(UserRoleEnum.Director)]
+        public async Task<IActionResult> UpdateCompany([FromBody] UpdateCompanyCommand command) 
+        {
+            var res = Mediator.Send(command);
+            return Ok(res);
+        }
+
         // need to implement update and delete
     }
 }

@@ -22,7 +22,6 @@ namespace WebAPI
         
         public void ConfigureServices(IServiceCollection services)
         {
-            // ИСПРАВЛЕННАЯ КОНФИГУРАЦИЯ CORS
             services.AddCors(options =>
             {
                 options.AddPolicy("FrontendPolicy", builder =>
@@ -39,10 +38,9 @@ namespace WebAPI
                         .AllowAnyMethod()
                         .AllowAnyHeader()
                         .AllowCredentials()
-                        .SetPreflightMaxAge(TimeSpan.FromMinutes(5)); // Кэшируем preflight запросы
+                        .SetPreflightMaxAge(TimeSpan.FromMinutes(5)); 
                 });
 
-                // Альтернативная политика для development (если нужна)
                 options.AddPolicy("Development", builder =>
                 {
                     builder
@@ -170,23 +168,20 @@ namespace WebAPI
                 c.RoutePrefix = string.Empty;
             });
 
-            // ИСПРАВЛЕННЫЙ ПОРЯДОК MIDDLEWARE - КРИТИЧЕСКИ ВАЖНО!
             app.UseRouting();
             
-            // CORS должен быть ПЕРЕД Authentication и Authorization
             if (env.IsDevelopment())
             {
-                app.UseCors("Development"); // Более гибкая политика для development
+                app.UseCors("Development"); 
             }
             else
             {
-                app.UseCors("FrontendPolicy"); // Строгая политика для production
+                app.UseCors("FrontendPolicy"); 
             }
             
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             
-            // Authentication и Authorization ПОСЛЕ CORS
             app.UseAuthentication();
             app.UseAuthorization();
 

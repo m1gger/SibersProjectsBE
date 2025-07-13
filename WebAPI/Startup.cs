@@ -30,7 +30,7 @@ namespace WebAPI
             //});
             services.AddCors(options =>
             {
-                options.AddPolicy("AllowLocalhost",
+                options.AddPolicy("FrontendPolicy",
                     builder => builder
                         .SetIsOriginAllowed(origin => true)
                         //.WithOrigins("http://localhost:3000", "www.localhost:3000") // твои фронты
@@ -162,7 +162,7 @@ namespace WebAPI
             });
 
             app.UseRouting();
-            app.UseCors("AllowLocalhost");
+            app.UseCors("FrontendPolicy");
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();

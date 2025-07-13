@@ -20,13 +20,22 @@ namespace WebAPI
         }
         public void ConfigureServices(IServiceCollection services)
         {
+            //services.AddCors(options =>
+            //{
+            //    options.AddPolicy("AllowAll",
+            //        builder => builder
+            //            .AllowAnyOrigin()
+            //            .AllowAnyMethod()
+            //            .AllowAnyHeader());
+            //});
             services.AddCors(options =>
             {
-                options.AddPolicy("AllowAll",
+                options.AddPolicy("AllowLocalhost",
                     builder => builder
-                        .AllowAnyOrigin()
+                        .WithOrigins("http://localhost:3000", "www.localhost:3000") // твои фронты
+                        .AllowAnyHeader()
                         .AllowAnyMethod()
-                        .AllowAnyHeader());
+                        .AllowCredentials());
             });
 
             services.AddControllers();
@@ -152,7 +161,7 @@ namespace WebAPI
             });
 
             app.UseRouting();
-            app.UseCors("AllowAll");
+            app.UseCors("AllowLocalhost");
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();

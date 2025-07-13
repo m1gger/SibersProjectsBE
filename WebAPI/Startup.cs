@@ -20,6 +20,15 @@ namespace WebAPI
         }
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAll",
+                    builder => builder
+                        .AllowAnyOrigin()
+                        .AllowAnyMethod()
+                        .AllowAnyHeader());
+            });
+
             services.AddControllers();
             services.AddEndpointsApiExplorer();
             services.AddPersistence(Configuration);
@@ -33,6 +42,7 @@ namespace WebAPI
                 options.Password.RequireUppercase = false;
                 options.Password.RequireNonAlphanumeric = false;
             })
+
                 .AddEntityFrameworkStores<SibersDbContext>()
                 .AddDefaultTokenProviders();
             services.Configure<JwtSettings>(Configuration.GetSection("Jwt"));
@@ -142,6 +152,7 @@ namespace WebAPI
             });
 
             app.UseRouting();
+            app.UseCors("AllowAll");
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();

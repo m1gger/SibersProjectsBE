@@ -1,4 +1,4 @@
-﻿using Application;
+using Application;
 using Application.Configuration;
 using Domain.Entities;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -9,6 +9,7 @@ using Persistence;
 using System.Reflection;
 using System.Security.Claims;
 using System.Text;
+
 namespace WebAPI
 {
     public class Startup
@@ -18,23 +19,38 @@ namespace WebAPI
         {
             Configuration = configuration;
         }
+        
         public void ConfigureServices(IServiceCollection services)
         {
-            //services.AddCors(options =>
-            //{
-            //    options.AddPolicy("AllowAll",
-            //        builder => builder
-            //            .AllowAnyOrigin()
-            //            .AllowAnyMethod()
-            //            .AllowAnyHeader());
-            //});
+            // ИСПРАВЛЕННАЯ КОНФИГУРАЦИЯ CORS
             services.AddCors(options =>
             {
-                options.AddPolicy("FrontendPolicy",
-                    builder => builder
-                        .AllowAnyOrigin()
+                options.AddPolicy("FrontendPolicy", builder =>
+                {
+                    builder
+                        .WithOrigins(
+                            "http://localhost:3000",
+                            "http://localhost:5173", 
+                            "http://localhost:4173",
+                            "http://localhost:8080",
+                            "https://localhost:3000",
+                            "https://localhost:5173"
+                        )
+                        .AllowAnyMethod()
                         .AllowAnyHeader()
-                        .AllowAnyMethod());
+                        .AllowCredentials()
+                        .SetPreflightMaxAge(TimeSpan.FromMinutes(5)); // Кэшируем preflight запросы
+                });
+
+                // Альтернативная политика для development (если нужна)
+                options.AddPolicy("Development", builder =>
+                {
+                    builder
+                        .SetIsOriginAllowed(origin => true)
+                        .AllowAnyMethod()
+                        .AllowAnyHeader()
+                        .AllowCredentials();
+                });
             });
 
             services.AddControllers();
@@ -50,9 +66,9 @@ namespace WebAPI
                 options.Password.RequireUppercase = false;
                 options.Password.RequireNonAlphanumeric = false;
             })
-
-                .AddEntityFrameworkStores<SibersDbContext>()
-                .AddDefaultTokenProviders();
+            .AddEntityFrameworkStores<SibersDbContext>()
+            .AddDefaultTokenProviders();
+            
             services.Configure<JwtSettings>(Configuration.GetSection("Jwt"));
             var jwtSettings = Configuration.GetSection("Jwt").Get<JwtSettings>();
             var key = Encoding.UTF8.GetBytes(jwtSettings.Secret);
@@ -75,14 +91,13 @@ namespace WebAPI
                     ValidateIssuerSigningKey = true,
                     IssuerSigningKey = new SymmetricSecurityKey(key)
                 };
+                
                 options.Events = new JwtBearerEvents
                 {
-
                     OnTokenValidated = async context =>
                     {
                         var userManager = context.HttpContext.RequestServices.GetRequiredService<UserManager<User>>();
                         var userId = context.Principal.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-
 
                         if (userId == null)
                         {
@@ -96,10 +111,7 @@ namespace WebAPI
                             context.Fail("User not found");
                             return;
                         }
-
-
                     }
-
                 };
             });
 
@@ -140,7 +152,6 @@ namespace WebAPI
                     }
                 });
             });
-
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -156,14 +167,26 @@ namespace WebAPI
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Sibers TEST API v1");
-                c.RoutePrefix = string.Empty; // Swagger UI at the root
+                c.RoutePrefix = string.Empty;
             });
 
+            // ИСПРАВЛЕННЫЙ ПОРЯДОК MIDDLEWARE - КРИТИЧЕСКИ ВАЖНО!
             app.UseRouting();
-            app.UseCors("FrontendPolicy");
-
+            
+            // CORS должен быть ПЕРЕД Authentication и Authorization
+            if (env.IsDevelopment())
+            {
+                app.UseCors("Development"); // Более гибкая политика для development
+            }
+            else
+            {
+                app.UseCors("FrontendPolicy"); // Строгая политика для production
+            }
+            
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+            
+            // Authentication и Authorization ПОСЛЕ CORS
             app.UseAuthentication();
             app.UseAuthorization();
 

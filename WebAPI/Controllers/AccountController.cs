@@ -61,7 +61,7 @@ namespace WebAPI.Controllers
         /// as total count.</returns>
         [HttpGet]
         [AuthorizeRole(UserRoleEnum.Director)]
-        public async Task<ActionResult<PagedDto<UserDto>>> GetAllUsers([FromQuery]GetAllUsersQuery query)
+        public async Task<ActionResult<PagedDto<UserDto>>> GetAllUsers([FromQuery] GetAllUsersQuery query)
         {
             var res = await Mediator.Send(query);
             return Ok(res);
@@ -79,6 +79,16 @@ namespace WebAPI.Controllers
         {
             var res = await Mediator.Send(request);
             return Ok(res);
+        }
+
+        [HttpDelete]
+        [AuthorizeRole(UserRoleEnum.Director)]
+        public async Task<IActionResult> DeleteUser([FromQuery] DeleteUserCommand request)
+        {
+            var res = await Mediator.Send(request);
+            return Ok(res);
+
+
         }
     }
 }

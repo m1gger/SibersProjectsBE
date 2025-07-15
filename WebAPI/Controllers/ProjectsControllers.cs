@@ -105,6 +105,19 @@ namespace WebAPI.Controllers
             return Ok(res);
         }
 
+        /// <summary>
+        /// Deletes a project based on the provided command.
+        /// </summary>
+        /// <param name="command"></param>
+        /// <returns></returns>
+        [HttpDelete]
+        [AuthorizeRole(UserRoleEnum.Director)]
+        public async Task<IActionResult> DeleteProject([FromQuery] DeleteProjectCommand command)
+        {
+            var res = await Mediator.Send(command);
+            return Ok(res);
+        }
+
 
 
     }

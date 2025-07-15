@@ -67,6 +67,18 @@ namespace WebAPI.Controllers
             return Ok(res);
         }
 
+        /// <summary>
+        /// Updates user information based on the provided request.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         // need to implement update and delete
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> UpdateUser([FromBody] UpdateUserCommand request)
+        {
+            var res = await Mediator.Send(request);
+            return Ok(res);
+        }
     }
 }

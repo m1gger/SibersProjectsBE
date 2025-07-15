@@ -92,6 +92,19 @@ namespace WebAPI.Controllers
             return Ok(res);
 
         }
+        /// <summary>
+        /// Updates an existing project based on the provided command.
+        /// </summary>
+        /// <param name="command"></param>
+        /// <returns></returns>
+        [HttpPatch]
+        [AuthorizeRole( UserRoleEnum.Director)]
+        public async Task<IActionResult> UpdateProject([FromForm] UpdateProjectCommand command)
+        {
+            var res = await Mediator.Send(command);
+            return Ok(res);
+        }
+
 
 
     }

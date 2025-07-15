@@ -10,5 +10,6 @@ namespace Application.Interfaces
     public interface IFileService
     {
         public  Task<string> SaveFileAsync(IFormFile file, string fileName, string projectName);
+        // need to implement delete file method
     }
 }

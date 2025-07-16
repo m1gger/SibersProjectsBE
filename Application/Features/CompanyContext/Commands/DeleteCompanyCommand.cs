@@ -42,7 +42,7 @@ namespace Application.Features.CompanyContext.Commands
         }
         private async Task<bool> CompanyMustExist(int copmanyId, CancellationToken cancellation) 
         {
-            return !await _context.Companies.AnyAsync(x => x.Id == copmanyId);
+            return await _context.Companies.AnyAsync(x => x.Id == copmanyId);
         }
     }
 

@@ -41,7 +41,7 @@ namespace WebAPI.Controllers
         [AuthorizeRole(UserRoleEnum.Director)]
         public async Task<IActionResult> DeleteCompany([FromQuery] DeleteCompanyCommand companyCommand) 
         {
-            var res = Mediator.Send(companyCommand);
+            var res =await Mediator.Send(companyCommand);
             return Ok(res);
         }
 
@@ -49,7 +49,7 @@ namespace WebAPI.Controllers
         [AuthorizeRole(UserRoleEnum.Director)]
         public async Task<IActionResult> UpdateCompany([FromBody] UpdateCompanyCommand command) 
         {
-            var res = Mediator.Send(command);
+            var res = await  Mediator.Send(command);
             return Ok(res);
         }
 

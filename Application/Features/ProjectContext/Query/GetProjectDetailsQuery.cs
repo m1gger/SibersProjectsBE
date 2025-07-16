@@ -27,8 +27,14 @@ namespace Application.Features.ProjectContext.Query
         public async Task<ProjectDto?> Handle(GetProjectDetailsQuery request, CancellationToken cancellationToken)
         {
             var project = await _dbContext.Projects
-           
-                .AsNoTracking()
+                 .Include(p => p.ProjectUsers)
+                     .ThenInclude(pu => pu.User)
+                     .Include(p => p.Leader)
+                     .Include(p => p.ProjectCompanies)
+                            .ThenInclude(pc => pc.Company)
+                            .Include(p => p.ProjectDocuments)
+
+
                 .FirstOrDefaultAsync(p => p.Id == request.ProjectId, cancellationToken);
 
             if (project == null)

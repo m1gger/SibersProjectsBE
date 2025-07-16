@@ -29,28 +29,29 @@ namespace Application.Features.CompanyContext.Commands
         {
             var company =await _context.Companies.FirstOrDefaultAsync(x => x.Id == command.CompanyId);
             company.Name = command.CompanyName;
+            _context.SaveChangesAsync();
             return Unit.Value;
         }
     }
 
 
-    public class UpdateCompanyValidator : AbstractValidator<UpdateCompanyCommand> 
-    {
-        private readonly ISibersDbContext _context;
-        public UpdateCompanyValidator(ISibersDbContext context)
-        {
+    //public class UpdateCompanyValidator : AbstractValidator<UpdateCompanyCommand> 
+    //{
+    //    private readonly ISibersDbContext _context;
+    //    public UpdateCompanyValidator(ISibersDbContext context)
+    //    {
 
-            _context = context;
-            RuleFor(x => x.CompanyId)
-                .MustAsync(CompanyMustExits)
-                .WithErrorCode("404")
-                .WithMessage("Company not found");
-        }
+    //        _context = context;
+    //        RuleFor(x => x.CompanyId)
+    //            .MustAsync(CompanyMustExits)
+    //            .WithErrorCode("404")
+    //            .WithMessage("Company not found");
+    //    }
 
-        private async Task<bool> CompanyMustExits(int companyId, CancellationToken cancellation) 
-        {
-            return !await _context.Companies.AllAsync(x => x.Id == companyId);
-        }
-    }
+    //    private async Task<bool> CompanyMustExits(int companyId, CancellationToken cancellation) 
+    //    {
+    //        return !await _context.Companies.AllAsync(x => x.Id == companyId);
+    //    }
+    //}
 
 }

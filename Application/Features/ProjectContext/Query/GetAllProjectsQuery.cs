@@ -39,17 +39,22 @@ namespace Application.Features.ProjectContext.Query
         public async Task<PagedDto<ProjectDto>> Handle(GetAllProjectsQuery request, CancellationToken cancellationToken)
         {
            var user = await _dbContext.Users
+                
                 .AsNoTracking()
                 .FirstOrDefaultAsync(u => u.Id == _currentUserService.UserId, cancellationToken);
              var roles= await _userManager.GetRolesAsync(user);
              var roleEnum = RolesHelper.GetUserRole(roles);
 
-
             var query = _dbContext.Projects
-           
-
-                .AsNoTracking()
+                .Include(p => p.ProjectUsers)
+                    .ThenInclude(pu => pu.User)
+                .Include(p => p.Leader)
+                .Include(p => p.ProjectCompanies)
+                    .ThenInclude(pc => pc.Company)
+                .Include(p => p.ProjectDocuments)
+                .Include(p => p.Tasks) // если есть задачи в проекте
                 .AsQueryable();
+
 
             switch (roleEnum) 
             {
@@ -104,7 +109,7 @@ namespace Application.Features.ProjectContext.Query
             }
 
             var totalCount = await query.CountAsync(cancellationToken);
-
+            
             var projects = await query
                 .Skip((request.PageNumber - 1) * request.PageSize)
                 .Take(request.PageSize)

@@ -94,8 +94,9 @@ namespace Application.Features.ProjectContext.Commands
     public class CreateNewProjectCommandValidator : AbstractValidator<CreateNewProjectCommand>
     {
         private readonly ISibersDbContext _dbContext;
-        public CreateNewProjectCommandValidator()
+        public CreateNewProjectCommandValidator(ISibersDbContext dbContext)
         {
+            _dbContext = dbContext;
             RuleFor(x => x.Name).NotEmpty().WithMessage("Project name is required.").WithErrorCode("5001");
             RuleFor(x => x.StartDate).LessThanOrEqualTo(x => x.EndDate)
                 .WithMessage("Start date must be before or equal to end date.")

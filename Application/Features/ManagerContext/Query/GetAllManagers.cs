@@ -34,7 +34,7 @@ namespace Application.Features.ManagerContext.Query
         {
             // 1. Найти Id роли EMPLOYER
             var employerRoleId = await _dbContext.Set<Role>()
-                .Where(r => r.Name == "MANAGER")
+                .Where(r => r.NormalizedName == "PROJECTMANAGER")
                 .Select(r => r.Id)
                 .FirstOrDefaultAsync(cancellationToken);
 

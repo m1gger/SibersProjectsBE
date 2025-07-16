@@ -5,6 +5,7 @@ using Application.Interfaces;
 using Application.Common.Helpers;
 using Domain.Entities;
 using Microsoft.AspNetCore.Identity;
+using Domain.GenericExtensions;
 
 namespace Application.Features.AccountContext.Query
 {
@@ -28,14 +29,15 @@ namespace Application.Features.AccountContext.Query
 
             var user = await _context.Users.FirstOrDefaultAsync(x => x.Id == _currentUserService.UserId);
                 var roles =await _userManager.GetRolesAsync(user);
-            var role = roles.FirstOrDefault() ?? "No Role Assigned";
+            var roleEnum= RolesHelper.GetUserRole(roles);
+
             var userDto = new UserDto
             {
                 Id = user.Id,
                 FullName = user.GetUserFullName(),
                 Email = user.Email,
                 UserName = user.UserName,
-                Role = role
+                Role = roleEnum.GetDescription()
             };
 
 

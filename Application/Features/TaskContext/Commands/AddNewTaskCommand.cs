@@ -35,7 +35,7 @@ namespace Application.Features.TaskContext.Commans
         }
         public async Task<int> Handle(AddNewTaskCommand request, CancellationToken cancellationToken)
         {
-            var task = new ProjectTask
+             var task = new ProjectTask
             {
                 Name = request.Name,
                 Description = request.Description,
@@ -52,7 +52,7 @@ namespace Application.Features.TaskContext.Commans
                 IsLeader = false
 
             };
-            var user=await _context.Users.FirstOrDefaultAsync(u => u.Id == request.EmployeeId);
+            var user=await _context.Users.FirstOrDefaultAsync(u => u.Id == _currentUser.UserId);
             var roles = await _userManager.GetRolesAsync(user);
             var role= RolesHelper.GetUserRole(roles);
             switch (role)

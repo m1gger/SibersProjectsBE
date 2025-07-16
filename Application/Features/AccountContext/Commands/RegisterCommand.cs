@@ -15,6 +15,10 @@ namespace Application.Features.AccountContext.Commands
         public string Email { get; set; }
         public string Password { get; set; }
         public string Role { get; set; }
+        public string? Name { get; set; }
+        public string? LastName { get; set; }
+        public string? Patronymic { get; set; }
+
 
     }
 
@@ -36,6 +40,9 @@ namespace Application.Features.AccountContext.Commands
             {
                 UserName = command.UserName,
                 Email = command.Email
+                , Name = command?.Name,
+                LastName = command?.LastName,
+                Patronymic = command?.Patronymic
             };
             var result = await _userManager.CreateAsync(user, command.Password);
          

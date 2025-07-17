@@ -9,9 +9,9 @@ namespace Domain.Entities
     public class TaskUser
     {
         public int TaskId { get; set; }
-        public virtual ProjectTask Task { get; set; } = new ProjectTask();
+        public virtual ProjectTask Task { get; set; } 
         public int UserId { get; set; }
-        public virtual User User { get; set; } = new User();
+        public virtual User User { get; set; } 
         public bool IsLeader { get; set; } = false;
     }
 }

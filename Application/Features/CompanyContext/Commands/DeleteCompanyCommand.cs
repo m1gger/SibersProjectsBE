@@ -21,7 +21,7 @@ namespace Application.Features.CompanyContext.Commands
         }
         public async Task<Unit> Handle(DeleteCompanyCommand request, CancellationToken cancellationToken)
         {
-            var company = await _dbContext.Companies.FindAsync(request.CompanyId);
+            var company = await _dbContext.Companies.FirstOrDefaultAsync(x=>x.Id==request.CompanyId);
             
             _dbContext.Companies.Remove(company);
             await _dbContext.SaveChangesAsync(cancellationToken);

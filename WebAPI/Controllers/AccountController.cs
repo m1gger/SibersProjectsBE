@@ -60,7 +60,7 @@ namespace WebAPI.Controllers
         /// cref="PagedDto{UserDto}"/> object, which includes the paginated list of users  and associated metadata such
         /// as total count.</returns>
         [HttpGet]
-        [AuthorizeRole(UserRoleEnum.Director)]
+        [AuthorizeRole(UserRoleEnum.Director,UserRoleEnum.Manager)]
         public async Task<ActionResult<PagedDto<UserDto>>> GetAllUsers([FromQuery] GetAllUsersQuery query)
         {
             var res = await Mediator.Send(query);

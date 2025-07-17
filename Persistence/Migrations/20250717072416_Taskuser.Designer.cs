@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Persistence;
 
@@ -11,9 +12,11 @@ using Persistence;
 namespace Persistence.Migrations
 {
     [DbContext(typeof(SibersDbContext))]
-    partial class SibersDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250717072416_Taskuser")]
+    partial class Taskuser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -40,7 +43,7 @@ namespace Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Companies", (string)null);
+                    b.ToTable("Companies");
                 });
 
             modelBuilder.Entity("Domain.Entities.Project", b =>
@@ -77,7 +80,7 @@ namespace Persistence.Migrations
 
                     b.HasIndex("LeaderUserId");
 
-                    b.ToTable("Projects", (string)null);
+                    b.ToTable("Projects");
                 });
 
             modelBuilder.Entity("Domain.Entities.ProjectCompany", b =>
@@ -95,7 +98,7 @@ namespace Persistence.Migrations
 
                     b.HasIndex("CompanyId");
 
-                    b.ToTable("ProjectCompanies", (string)null);
+                    b.ToTable("ProjectCompanies");
                 });
 
             modelBuilder.Entity("Domain.Entities.ProjectDocument", b =>
@@ -122,7 +125,7 @@ namespace Persistence.Migrations
 
                     b.HasIndex("ProjectId");
 
-                    b.ToTable("ProjectDocument", (string)null);
+                    b.ToTable("ProjectDocument");
                 });
 
             modelBuilder.Entity("Domain.Entities.ProjectTask", b =>
@@ -162,7 +165,7 @@ namespace Persistence.Migrations
 
                     b.HasIndex("ProjectId");
 
-                    b.ToTable("ProjectTasks", (string)null);
+                    b.ToTable("ProjectTasks");
                 });
 
             modelBuilder.Entity("Domain.Entities.ProjectUsers", b =>
@@ -177,7 +180,7 @@ namespace Persistence.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("ProjectUsers", (string)null);
+                    b.ToTable("ProjectUsers");
                 });
 
             modelBuilder.Entity("Domain.Entities.Role", b =>
@@ -225,7 +228,7 @@ namespace Persistence.Migrations
 
                     b.HasIndex("TaskId");
 
-                    b.ToTable("TaskUsers", (string)null);
+                    b.ToTable("TaskUsers");
                 });
 
             modelBuilder.Entity("Domain.Entities.User", b =>

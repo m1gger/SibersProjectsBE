@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Persistence.EntityTypeConfiguration
 {
-    class UserTaskConfiguration : IEntityTypeConfiguration<TaskUser>
+    public class UserTaskConfiguration : IEntityTypeConfiguration<TaskUser>
     {
         public void Configure(EntityTypeBuilder<TaskUser> builder)
         {

@@ -171,16 +171,17 @@ namespace WebAPI
             });
             app.UseStaticFiles();
 
-            app.UseRouting();
-            
             if (env.IsDevelopment())
             {
-                app.UseCors("Development"); 
+                app.UseCors("Development");
             }
             else
             {
-                app.UseCors("FrontendPolicy"); 
+                app.UseCors("FrontendPolicy");
             }
+
+            app.UseRouting();
+            
             
             app.UseHttpsRedirection();
             

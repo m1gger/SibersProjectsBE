@@ -27,12 +27,17 @@ namespace Application.Services
 
             projectName = MakeSafeName(projectName);
 
+            var originalExtension = Path.GetExtension(file.FileName); 
             var safeFileName = MakeSafeName(Path.GetFileNameWithoutExtension(fileName));
-            var extension = Path.GetExtension(fileName);
-            var finalFileName = $"{safeFileName}_{Guid.NewGuid()}{extension}";
+
+            if (safeFileName.EndsWith(originalExtension.TrimStart('.'), StringComparison.OrdinalIgnoreCase))
+            {
+                safeFileName = safeFileName.Substring(0, safeFileName.Length - originalExtension.TrimStart('.').Length);
+            }
+
+            var finalFileName = $"{safeFileName}_{Guid.NewGuid()}{originalExtension}";
 
             var projectFolder = Path.Combine(wwwRootPath, "documents", projectName);
-
             if (!Directory.Exists(projectFolder))
                 Directory.CreateDirectory(projectFolder);
 
@@ -47,9 +52,9 @@ namespace Application.Services
             return relativePath;
         }
 
+
         private string MakeSafeName(string name)
         {
-            // Удаляем всё, кроме букв, цифр, тире и подчёркивания
             var safe = Regex.Replace(name, @"[^a-zA-Z0-9_\-]", "_");
             return safe;
         }

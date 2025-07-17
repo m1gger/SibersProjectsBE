@@ -30,7 +30,8 @@ namespace Application.Features.AccountContext.Query
 
         public async Task<PagedDto<UserDto>> Handle(GetAllUsersQuery request, CancellationToken cancellationToken)
         {
-            var usersQuery = _dbContext.Users.AsQueryable();
+            var usersQuery = _dbContext.Users.Include(x=>x.ProjectUsers).Include(x=>x.TaskUsers).AsQueryable();
+
 
             if (request.ProjectId.HasValue)
             {
@@ -100,7 +101,10 @@ namespace Application.Features.AccountContext.Query
                 FullName = u.GetUserFullName(),
                 Email = u.Email,
                 UserName = u.UserName,
-                Role = rolesDict.TryGetValue(u.Id, out var role) ? role : null
+                Role = rolesDict.TryGetValue(u.Id, out var role) ? role : null,
+                TaskCount = u.TaskUsers.Count,
+                ProjectCount = u.ProjectUsers.Count,
+
             }).ToList();
 
             return new PagedDto<UserDto>

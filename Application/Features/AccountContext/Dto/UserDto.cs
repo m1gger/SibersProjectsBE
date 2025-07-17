@@ -13,6 +13,8 @@ namespace Application.Features.AccountContext.Dto
         public string Email { get; set; }
         public string UserName { get; set; }
         public string Role { get; set; } 
+        public  int? TaskCount { get; set; }
+        public int? ProjectCount { get; set; }
 
     }
 }

@@ -12,6 +12,7 @@ namespace Domain.Enums
         InProgress = 1,
         Completed = 2,
         OnHold = 3,
-        Cancelled = 4
+        Testing =4,
+        Cancelled = 5
     }
 }

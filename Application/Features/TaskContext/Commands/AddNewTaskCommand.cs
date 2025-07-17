@@ -5,6 +5,7 @@ using Application.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Application.Common.Helpers;
+using FluentValidation;
 
 
 namespace Application.Features.TaskContext.Commans
@@ -22,12 +23,12 @@ namespace Application.Features.TaskContext.Commans
 
     }
 
-    public class AddNewTaskCommandHandler : IRequestHandler<AddNewTaskCommand, int> 
+    public class AddNewTaskCommandHandler : IRequestHandler<AddNewTaskCommand, int>
     {
         private readonly ISibersDbContext _context;
         private readonly ICurrentUserService _currentUser;
         private readonly UserManager<User> _userManager;
-        public AddNewTaskCommandHandler(ISibersDbContext context, ICurrentUserService currentUser,UserManager<User> userManager)
+        public AddNewTaskCommandHandler(ISibersDbContext context, ICurrentUserService currentUser, UserManager<User> userManager)
         {
             _context = context;
             _currentUser = currentUser;
@@ -35,7 +36,7 @@ namespace Application.Features.TaskContext.Commans
         }
         public async Task<int> Handle(AddNewTaskCommand request, CancellationToken cancellationToken)
         {
-             var task = new ProjectTask
+            var task = new ProjectTask
             {
                 Name = request.Name,
                 Description = request.Description,
@@ -52,9 +53,9 @@ namespace Application.Features.TaskContext.Commans
                 IsLeader = false
 
             };
-            var user=await _context.Users.FirstOrDefaultAsync(u => u.Id == _currentUser.UserId);
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == _currentUser.UserId);
             var roles = await _userManager.GetRolesAsync(user);
-            var role= RolesHelper.GetUserRole(roles);
+            var role = RolesHelper.GetUserRole(roles);
             switch (role)
             {
                 case UserRoleEnum.Director:
@@ -69,7 +70,7 @@ namespace Application.Features.TaskContext.Commans
                         };
                         task.TaskUsers.Add(taskLeader1);
                     }
-                    else 
+                    else
                     {
                         throw new Exception("LeaderId is required for Director role");
                     }
@@ -78,24 +79,55 @@ namespace Application.Features.TaskContext.Commans
                     var taskLeader = new TaskUser
                     {
                         Task = task,
-                        UserId =_currentUser.UserId.Value,
+                        UserId = _currentUser.UserId.Value,
                         IsLeader = true
 
                     };
                     task.TaskUsers.Add(taskLeader);
                     break;
-                
+
                 default:
                     throw new Exception("Unknown user role");
             }
 
 
             task.TaskUsers.Add(taskUser);
-            
+
             _context.ProjectTasks.Add(task);
             _context.TaskUsers.AddRange(task.TaskUsers);
             await _context.SaveChangesAsync(cancellationToken);
             return task.Id;
         }
     }
+
+
+
+    public class AddNewTaskCommandValidator : AbstractValidator<AddNewTaskCommand> 
+    {
+        private readonly ISibersDbContext _dbContext;
+        public AddNewTaskCommandValidator(ISibersDbContext dbContext)
+        {
+            _dbContext = dbContext;
+            RuleFor(x => x.EmployeeId)
+                .NotEmpty()
+                .MustAsync(UserMustExist)
+                .WithMessage("User not found");
+            RuleFor(x => x.ProjectId)
+                .NotEmpty()
+                .MustAsync(ProjectMustExist)
+                .WithMessage("Project not found");
+
+        }
+
+        private async Task<bool> ProjectMustExist(int projectId, CancellationToken cancellation) 
+        {
+            return await _dbContext.Projects.AnyAsync(x => x.Id == projectId);
+        }
+        private async Task<bool> UserMustExist(int userId, CancellationToken cancellation) 
+        {
+            return await _dbContext.Users.AnyAsync(x => x.Id == userId);
+        }
+
+    }
 }
+

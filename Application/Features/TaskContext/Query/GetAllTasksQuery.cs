@@ -40,6 +40,13 @@ namespace Application.Features.TaskContext.Query
         public async Task<PagedDto<TaskDto>> Handle(GetAllTasksQuery request, CancellationToken cancellationToken)
         {
             var query = _context.ProjectTasks.AsQueryable();
+            query = query.Include(x => x.Project)
+                .Include(x => x.TaskUsers).ThenInclude(x => x.User);
+           
+
+
+
+
             var user = await _context.Users.FirstOrDefaultAsync(x => x.Id == _currentUserService.UserId);
             var roles = await _userManager.GetRolesAsync(user);
             var role = RolesHelper.GetUserRole(roles);
@@ -118,12 +125,14 @@ namespace Application.Features.TaskContext.Query
                     Description = t.Description,
                     TaskStatus = t.TaskStatus.GetDescription(),
                     Priority = t.Priority,
-                    EmployeeName=t.TaskUsers.Where(x => x.IsLeader==false).Select(x => x.User.Name).FirstOrDefault() ?? string.Empty,
+                    EmployeeName=t.TaskUsers.Where(x => x.IsLeader==false).Select(x => x.User.UserName).FirstOrDefault() ?? string.Empty,
                     EmployeeUserId = t.TaskUsers.Where(x => x.IsLeader == false).Select(x => x.UserId).FirstOrDefault(),
-                    LeaderName = t.TaskUsers.Where(x => x.IsLeader).Select(x => x.User.Name).FirstOrDefault() ?? string.Empty,
+                    LeaderName = t.TaskUsers.Where(x => x.IsLeader).Select(x => x.User.UserName).FirstOrDefault() ?? string.Empty,
                     LeaderUserId = t.TaskUsers.Where(x => x.IsLeader).Select(x => x.UserId).FirstOrDefault(),
                     StartDate = t.StartDate,
                     EndDate = t.EndDate,
+                    ProjectId=t.ProjectId,
+                    ProjectName=t.Project.Name, 
                 })
                 .ToListAsync(cancellationToken);
 

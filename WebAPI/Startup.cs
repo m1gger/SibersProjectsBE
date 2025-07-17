@@ -169,6 +169,7 @@ namespace WebAPI
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Sibers TEST API v1");
                 c.RoutePrefix = string.Empty;
             });
+            app.UseStaticFiles();
 
             app.UseRouting();
             
@@ -182,7 +183,6 @@ namespace WebAPI
             }
             
             app.UseHttpsRedirection();
-            app.UseStaticFiles();
             
             app.UseAuthentication();
             app.UseAuthorization();

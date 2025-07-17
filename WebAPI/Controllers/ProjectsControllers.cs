@@ -98,7 +98,7 @@ namespace WebAPI.Controllers
         /// <param name="command"></param>
         /// <returns></returns>
         [HttpPatch]
-        [AuthorizeRole( UserRoleEnum.Director)]
+        [AuthorizeRole( UserRoleEnum.Director,UserRoleEnum.Manager)]
         public async Task<IActionResult> UpdateProject([FromForm] UpdateProjectCommand command)
         {
             var res = await Mediator.Send(command);
